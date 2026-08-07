@@ -1,0 +1,240 @@
+﻿@model API.Models.User
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 4px 12px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 8px 12px;
+		font-weight: bold;
+		font-size: 14px;
+		color: #003366;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-module-body {
+		padding: 15px;
+	}
+
+	.web-profile-info {
+		background-color: #f2f5f8;
+		border: 1px solid #d0d7e1;
+		padding: 12px;
+		margin-bottom: 15px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.web-profile-info-item {
+		font-size: 12px;
+	}
+
+	.web-profile-info-label {
+		font-weight: bold;
+		color: #003366;
+	}
+
+	.web-quick-actions {
+		display: flex;
+		gap: 10px;
+		flex-wrap: wrap;
+		margin-bottom: 20px;
+	}
+
+	.web-table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		border: 1px solid #cccccc;
+	}
+
+		.web-table th {
+			background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+			border: 1px solid #b2c2d6;
+			padding: 8px 5px;
+			font-size: 11px;
+			color: #003366;
+			text-align: center;
+		}
+
+		.web-table td {
+			border: 1px solid #e0e0e0;
+			padding: 8px 5px;
+			vertical-align: middle;
+		}
+
+		.web-table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		.web-table tr:hover {
+			background-color: #f0f4f9;
+		}
+
+	.web-btn-fav-remove {
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #cc0000;
+		font-weight: bold;
+		padding: 3px 10px;
+		font-size: 10px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+		.web-btn-fav-remove:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d9d9d9 100%);
+		}
+
+	.web-section-divider {
+		border-top: 1px dotted #ccc;
+		margin: 15px 0;
+	}
+</style>
+
+<div class="web-top-bar">
+	<form action="/ecommerce" method="get" style="margin: 0;">
+		<button type="submit" class="web-btn-default">&laquo; Home Page</button>
+	</form>
+	<form action="/user/logout" method="get" style="margin: 0;">
+		<button type="submit" class="web-btn-default">Logout</button>
+	</form>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">
+		<span>Profile Details</span>
+	</div>
+	<div class="web-module-body">
+		<div class="web-profile-info">
+			<div class="web-profile-info-item">
+				<span class="web-profile-info-label">Name:</span> @ViewBag.Name
+			</div>
+			<div class="web-profile-info-item">
+				<span class="web-profile-info-label">Surname:</span> @ViewBag.Surname
+			</div>
+			<div class="web-profile-info-item">
+				<span class="web-profile-info-label">Email:</span> @ViewBag.Email
+			</div>
+			<div class="web-profile-info-item">
+				<span class="web-profile-info-label">Phone:</span> @ViewBag.Phone
+			</div>
+		</div>
+
+		<div class="web-quick-actions">
+			<form action="/ecommerce/showfavorites" method="get" style="margin: 0;">
+				<button type="submit" class="web-btn-default">Show Favorites</button>
+			</form>
+			<form action="/payment/showorders" style="margin: 0;">
+				<button type="submit" class="web-btn-default">Show Orders</button>
+			</form>
+			<form action="/user/passwordchange" style="margin: 0;">
+				<button type="submit" class="web-btn-default">Change Password</button>
+			</form>
+			<form action="/user/showcoupons" style="margin: 0;">
+				<button type="submit" class="web-btn-default">Discount Coupons</button>
+			</form>
+		</div>
+
+		<div class="web-section-divider"></div>
+
+		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+			<span style="font-weight: bold; font-size: 13px; color: #003366;">Saved Addresses</span>
+			<form action="/user/address" method="post" style="margin: 0;">
+				<input type="hidden" name="frompage" value="profile" />
+				<button type="submit" class="web-btn-default">+ Add New Address</button>
+			</form>
+		</div>
+
+		<table class="web-table">
+			<thead>
+				<tr>
+					<th>Address Name</th>
+					<th>City</th>
+					<th>District</th>
+					<th>Neighbourhood</th>
+					<th>Street</th>
+					<th>Building No.</th>
+					<th>Door No.</th>
+					<th>Description</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.Addresses)
+				{
+					<tr>
+						<td style="text-align: center; font-weight: bold;">@item.Name</td>
+						<td style="text-align: center;">@item.City</td>
+						<td style="text-align: center;">@item.District</td>
+						<td style="text-align: center;">@item.Neighbourhood</td>
+						<td style="text-align: center;">@item.Street</td>
+						<td style="text-align: center;">@item.BuildingNumber</td>
+						<td style="text-align: center;">@item.DoorNumber</td>
+						<td style="text-align: center;">@item.Description</td>
+						<td style="text-align: center;">
+							<form action="/user/removeaddress" method="post" style="margin: 0;">
+								@Html.AntiForgeryToken()
+								<input type="hidden" name="id" value="@item.Id" />
+								<button type="submit" class="web-btn-fav-remove">Remove</button>
+							</form>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

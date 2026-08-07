@@ -1,0 +1,491 @@
+﻿@model Tuple<List<API.Models.Book>, List<API.Models.Category>, List<API.Models.Book>, List<API.Models.Book>>
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-welcome {
+		font-size: 13px;
+		font-weight: bold;
+		color: #333;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 3px 10px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-search-container {
+		background-color: #f2f2f2;
+		border: 1px solid #cccccc;
+		padding: 12px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.web-search-input {
+		width: 350px;
+		padding: 5px;
+		border: 1px solid #7f9db9;
+		font-size: 13px;
+	}
+
+	.web-search-btn {
+		background: linear-gradient(to bottom, #0066cc 0%, #003399 100%);
+		color: white;
+		border: 1px solid #002266;
+		padding: 5px 15px;
+		font-weight: bold;
+		font-size: 12px;
+		border-radius: 2px;
+		cursor: pointer;
+	}
+
+		.web-search-btn:hover {
+			background: linear-gradient(to bottom, #0055bb 0%, #002288 100%);
+		}
+
+	.web-main-layout {
+		display: flex;
+		gap: 15px;
+	}
+
+	.web-sidebar {
+		width: 200px;
+		flex-shrink: 0;
+	}
+
+	.web-content {
+		flex-grow: 1;
+	}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 6px 10px;
+		font-weight: bold;
+		font-size: 13px;
+		color: #003366;
+	}
+
+	.web-module-body {
+		padding: 10px;
+	}
+
+	.web-sidebar ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.web-sidebar li {
+		padding: 4px 0;
+		border-bottom: 1px dotted #ccc;
+	}
+
+		.web-sidebar li:last-child {
+			border-bottom: none;
+		}
+
+	.box-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		padding: 5px 0;
+	}
+
+	.box {
+		width: 175px;
+		background: #ffffff;
+		border: 1px solid #dcdcdc;
+		padding: 10px;
+		font-family: Arial, sans-serif;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+		.box:hover {
+			border-color: #999999;
+			box-shadow: 0 0 5px rgba(0,0,0,0.1);
+		}
+
+	.box-img-wrapper {
+		text-align: center;
+		margin-bottom: 8px;
+		height: 150px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.box-title {
+		font-weight: bold;
+		color: #0000cc;
+		font-size: 12px;
+		margin: 4px 0;
+		line-height: 1.2;
+		height: 30px;
+		overflow: hidden;
+	}
+
+	.box-meta {
+		font-size: 11px;
+		color: #666666;
+		margin: 2px 0;
+	}
+
+	.box-price {
+		font-size: 14px;
+		font-weight: bold;
+		color: #b20000;
+		margin: 6px 0;
+	}
+
+	.box-rating {
+		font-size: 11px;
+		color: #cc6600;
+		font-weight: bold;
+		margin: 2px 0;
+	}
+
+	.web-btn-action {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+		border: 1px solid #cc7a00;
+		color: #000000;
+		font-weight: bold;
+		padding: 4px 0;
+		font-size: 11px;
+		border-radius: 3px;
+		cursor: pointer;
+		margin-top: 4px;
+	}
+
+		.web-btn-action:hover {
+			background: linear-gradient(to bottom, #ffdb33 0%, #e68a00 100%);
+		}
+
+	.web-btn-disabled {
+		width: 100%;
+		background: #e0e0e0;
+		border: 1px solid #cccccc;
+		color: #888888;
+		padding: 4px 0;
+		font-size: 11px;
+		border-radius: 3px;
+		margin-top: 4px;
+	}
+
+	.web-btn-fav-add {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #006600;
+		font-weight: bold;
+		padding: 3px 0;
+		font-size: 10px;
+		border-radius: 3px;
+		cursor: pointer;
+		margin-top: 4px;
+	}
+
+	.web-btn-fav-remove {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #cc0000;
+		font-weight: bold;
+		padding: 3px 0;
+		font-size: 10px;
+		border-radius: 3px;
+		cursor: pointer;
+		margin-top: 4px;
+	}
+
+	.web-alert {
+		background-color: #fff6bf;
+		border: 1px solid #ffd23f;
+		padding: 8px 12px;
+		margin-bottom: 12px;
+		font-weight: bold;
+		color: #514721;
+	}
+
+	.web-basket-info {
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	.web-badge {
+		background-color: #cc0000;
+		color: #ffffff;
+		padding: 1px 6px;
+		border-radius: 10px;
+		font-size: 11px;
+	}
+</style>
+
+@if (ViewBag.LoginMessage != null)
+{
+	<div class="web-alert">
+		@ViewBag.LoginMessage
+	</div>
+}
+
+<header class="web-top-bar">
+	<div>
+		@{
+			if (ViewBag.Name != null)
+			{
+				<span class="web-welcome">Hello, <strong>@ViewBag.Name @ViewBag.Surname</strong>!</span>
+			}
+		}
+		<form action="/user/profile" method="get" style="display:inline-block; margin-left: 10px;">
+			<button type="submit" class="web-btn-default">My Profile</button>
+		</form>
+	</div>
+
+	<div class="web-basket-info">
+		<form action="/cart/checkout" method="get" style="display:inline-block;">
+			<span class="web-badge">@ViewBag.TotalQuantity</span>
+			<span style="margin: 0 5px;">| @(ViewBag.TotalPrice.ToString("C2"))</span>
+			<button type="submit" class="web-btn-default">My Basket</button>
+		</form>
+	</div>
+</header>
+
+<div class="web-search-container">
+	<form action="/ecommerce/search" method="post" style="display:flex; gap: 8px; align-items:center;">
+		<label for="title" style="font-weight:bold;">Search:</label>
+		<input type="text" id="title" name="title" class="web-search-input" placeholder='Enter a Book Name...' required />
+		<button type="submit" class="web-search-btn">Search Store</button>
+	</form>
+</div>
+
+<div class="web-main-layout">
+
+	<aside class="web-sidebar">
+		<div class="web-module">
+			<div class="web-module-header">Categories</div>
+			<div class="web-module-body">
+				<ul>
+					@{
+						foreach (var category in Model.Item2)
+						{
+							<li><a href="/ecommerce/index/@category.Id">@category.Name</a></li>
+						}
+					}
+					<li style="margin-top: 5px; font-weight: bold;"><a href="/ecommerce/index">Show All Books</a></li>
+				</ul>
+			</div>
+		</div>
+	</aside>
+
+	<main class="web-content">
+
+		<div class="web-module">
+			<div class="web-module-header">Recommended Products</div>
+			<div class="web-module-body">
+				<div class="box-container">
+					@{
+						for (int i = 0; i < 5; i++)
+						{
+							<div class="box">
+								<div>
+									<div class="box-img-wrapper">
+										<a href="/ecommerce/details/@Model.Item4[i].Id">
+											<img src="@Model.Item4[i].Image" width="150" height="150" style="object-fit: contain;" />
+										</a>
+									</div>
+									<div class="box-title">
+										<a href="/ecommerce/details/@Model.Item4[i].Id">@Model.Item4[i].Title</a>
+									</div>
+									<div class="box-meta">by @Model.Item4[i].Author</div>
+									<div class="box-meta">Pub: @Model.Item4[i].Publisher</div>
+
+									@if (!string.Equals(@Model.Item4[i].Rating, "0"))
+									{
+										float rate = Convert.ToInt32(Model.Item4[i].Rating) / 2;
+										<div class="box-rating">Rating: @rate / 5</div>
+									}
+
+									<div class="box-price">@Model.Item4[i].Price</div>
+								</div>
+
+								<div>
+									@{
+										if (@Model.Item4[i].Stock > 0)
+										{
+											<form action="/ecommerce/addbasket" method="post">
+												@Html.AntiForgeryToken()
+												<input type="hidden" name="id" value="@Model.Item4[i].Id" />
+												<input type="hidden" name="frompage" value="main" />
+												<button type="submit" class="web-btn-action">Add to Basket</button>
+											</form>
+										}
+										else
+										{
+											<button type="submit" class="web-btn-disabled" disabled>Out of Stock...</button>
+										}
+									}
+
+									@{
+										if (ViewBag.Name != null)
+										{
+											if (!@Model.Item4[i].FavoriteStatus)
+											{
+												<form action="/ecommerce/addfavorites" method="post">
+													@Html.AntiForgeryToken()
+													<input type="hidden" name="id" value="@Model.Item4[i].Id" />
+													<input type="hidden" name="frompage" value="main" />
+													<button type="submit" class="web-btn-fav-add">+ Add to Favorites</button>
+												</form>
+											}
+											else
+											{
+												<form action="/ecommerce/removefavorites" method="post">
+													@Html.AntiForgeryToken()
+													<input type="hidden" name="id" value="@Model.Item4[i].Id" />
+													<input type="hidden" name="frompage" value="main" />
+													<button type="submit" class="web-btn-fav-remove">- Remove Favorite</button>
+												</form>
+											}
+										}
+									}
+								</div>
+							</div>
+						}
+					}
+				</div>
+			</div>
+		</div>
+
+		@if (Model.Item3.Count > 0)
+		{
+			<div class="web-module">
+				<div class="web-module-header">Recently Viewed Items</div>
+				<div class="web-module-body">
+					<div class="box-container">
+						@{
+							for (int i = 0; i < Model.Item3.Count; i++)
+							{
+								<div class="box">
+									<div>
+										<div class="box-img-wrapper">
+											<a href="/ecommerce/details/@Model.Item3[i].Id">
+												<img src="@Model.Item3[i].Image" width="150" height="150" style="object-fit: contain;" />
+											</a>
+										</div>
+										<div class="box-title">
+											<a href="/ecommerce/details/@Model.Item3[i].Id">@Model.Item3[i].Title</a>
+										</div>
+										<div class="box-meta">by @Model.Item3[i].Author</div>
+										<div class="box-meta">Pub: @Model.Item3[i].Publisher</div>
+
+										@if (!string.Equals(@Model.Item3[i].Rating, "0"))
+										{
+											float rate = Convert.ToInt32(Model.Item3[i].Rating) / 2;
+											<div class="box-rating">Rating: @rate / 5</div>
+										}
+
+										<div class="box-price">@Model.Item3[i].Price</div>
+									</div>
+
+									<div>
+										@{
+											if (@Model.Item3[i].Stock > 0)
+											{
+												<form action="/ecommerce/addbasket" method="post">
+													@Html.AntiForgeryToken()
+													<input type="hidden" name="id" value="@Model.Item3[i].Id" />
+													<input type="hidden" name="frompage" value="main" />
+													<button type="submit" class="web-btn-action">Add to Basket</button>
+												</form>
+											}
+											else
+											{
+												<button type="submit" class="web-btn-disabled" disabled>Out of Stock...</button>
+											}
+										}
+
+										@{
+											if (ViewBag.Name != null)
+											{
+												if (!@Model.Item3[i].FavoriteStatus)
+												{
+													<form action="/ecommerce/addfavorites" method="post">
+														@Html.AntiForgeryToken()
+														<input type="hidden" name="id" value="@Model.Item3[i].Id" />
+														<input type="hidden" name="frompage" value="main" />
+														<button type="submit" class="web-btn-fav-add">+ Add to Favorites</button>
+													</form>
+												}
+												else
+												{
+													<form action="/ecommerce/removefavorites" method="post">
+														@Html.AntiForgeryToken()
+														<input type="hidden" name="id" value="@Model.Item3[i].Id" />
+														<input type="hidden" name="frompage" value="main" />
+														<button type="submit" class="web-btn-fav-remove">- Remove Favorite</button>
+													</form>
+												}
+											}
+										}
+									</div>
+								</div>
+							}
+						}
+					</div>
+				</div>
+			</div>
+		}
+
+	</main>
+</div>

@@ -1,0 +1,219 @@
+﻿@model Tuple<List<API.Models.Coupon>, List<API.Models.Coupon>>
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 4px 12px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 8px 12px;
+		font-weight: bold;
+		font-size: 14px;
+		color: #003366;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-module-body {
+		padding: 15px;
+	}
+
+	.web-table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		border: 1px solid #cccccc;
+	}
+
+		.web-table th {
+			background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+			border: 1px solid #b2c2d6;
+			padding: 8px 5px;
+			font-size: 11px;
+			color: #003366;
+			text-align: center;
+		}
+
+		.web-table td {
+			border: 1px solid #e0e0e0;
+			padding: 8px 5px;
+			vertical-align: middle;
+		}
+
+		.web-table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		.web-table tr:hover {
+			background-color: #f0f4f9;
+		}
+
+	.web-coupon-code {
+		font-weight: bold;
+		color: #008000;
+		background-color: #e6f4ea;
+		padding: 2px 6px;
+		border: 1px dashed #008000;
+		border-radius: 3px;
+		display: inline-block;
+	}
+
+	.web-coupon-code-disabled {
+		font-weight: bold;
+		color: #777777;
+		background-color: #e0e0e0;
+		padding: 2px 6px;
+		border: 1px dashed #999999;
+		border-radius: 3px;
+		display: inline-block;
+	}
+
+	.web-discount-text {
+		font-weight: bold;
+		color: #b20000;
+	}
+
+	.web-alert-info {
+		background-color: #f2f5f8;
+		border: 1px solid #d0d7e1;
+		padding: 10px 12px;
+		color: #555555;
+		font-size: 12px;
+	}
+</style>
+
+<div class="web-top-bar">
+	<form action="/user/profile" style="margin: 0;">
+		<button type="submit" class="web-btn-default">&laquo; Go Back</button>
+	</form>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">
+		<span>My Active Coupons</span>
+	</div>
+	<div class="web-module-body">
+		@{
+			if (Model.Item1.Count == 0)
+			{
+				<div class="web-alert-info">
+					You don't have any active coupons available.
+				</div>
+			}
+			else
+			{
+				<table class="web-table">
+					<thead>
+						<tr>
+							<th>Coupon Code</th>
+							<th>Discount Amount</th>
+							<th>Minimum Spend</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var coupon in Model.Item1)
+						{
+							<tr>
+								<td style="text-align: center;">
+									<span class="web-coupon-code">@coupon.Code</span>
+								</td>
+								<td style="text-align: center;" class="web-discount-text">@coupon.DiscountAmount ₺</td>
+								<td style="text-align: center;">@coupon.MinAmount ₺</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		}
+	</div>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">
+		<span>Used Coupons</span>
+	</div>
+	<div class="web-module-body">
+		@{
+			if (Model.Item2.Count == 0)
+			{
+				<div class="web-alert-info">
+					You haven't used a coupon yet.
+				</div>
+			}
+			else
+			{
+				<table class="web-table">
+					<thead>
+						<tr>
+							<th>Coupon Code</th>
+							<th>Discount Amount</th>
+							<th>Minimum Spend</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var coupon in Model.Item2)
+						{
+							<tr>
+								<td style="text-align: center;">
+									<span class="web-coupon-code-disabled">@coupon.Code</span>
+								</td>
+								<td style="text-align: center; color: #777777;">@coupon.DiscountAmount ₺</td>
+								<td style="text-align: center; color: #777777;">@coupon.MinAmount ₺</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		}
+	</div>
+</div>

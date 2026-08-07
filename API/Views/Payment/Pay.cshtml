@@ -1,0 +1,270 @@
+﻿@model List<API.Models.Address>
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 4px 12px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-alert {
+		background-color: #fff6bf;
+		border: 1px solid #ffd23f;
+		padding: 8px 12px;
+		margin-bottom: 12px;
+		font-weight: bold;
+		color: #514721;
+	}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 8px 12px;
+		font-weight: bold;
+		font-size: 14px;
+		color: #003366;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-module-body {
+		padding: 15px;
+	}
+
+	.web-address-card {
+		border: 1px solid #e0e0e0;
+		background-color: #fafafa;
+		padding: 10px;
+		margin-bottom: 10px;
+		border-radius: 3px;
+	}
+
+		.web-address-card:hover {
+			background-color: #f0f4f9;
+			border-color: #b2c2d6;
+		}
+
+	.web-address-title {
+		font-weight: bold;
+		color: #003366;
+		margin-left: 5px;
+	}
+
+	.web-address-details {
+		margin: 5px 0 0 20px;
+		color: #555555;
+		line-height: 1.4;
+	}
+
+	.web-price-text {
+		font-size: 14px;
+		font-weight: bold;
+		color: #b20000;
+	}
+
+	.web-discount-text {
+		font-size: 14px;
+		font-weight: bold;
+		color: #008000;
+	}
+
+	.web-old-price {
+		text-decoration: line-through;
+		color: #777777;
+		margin-bottom: 3px;
+	}
+
+	.web-input-text {
+		padding: 4px;
+		border: 1px solid #7f9db9;
+		font-size: 11px;
+		width: 200px;
+	}
+
+	.web-btn-action {
+		background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+		border: 1px solid #cc7a00;
+		color: #000000;
+		font-weight: bold;
+		padding: 6px 18px;
+		font-size: 12px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+		.web-btn-action:hover {
+			background: linear-gradient(to bottom, #ffdb33 0%, #e68a00 100%);
+		}
+
+	.web-btn-fav-remove {
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #cc0000;
+		font-weight: bold;
+		padding: 3px 10px;
+		font-size: 10px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+	.web-checkout-summary {
+		background-color: #f2f5f8;
+		border: 1px solid #d0d7e1;
+		padding: 12px;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+
+	.web-section-divider {
+		border-top: 1px dotted #ccc;
+		margin: 15px 0;
+	}
+</style>
+
+<div class="web-top-bar">
+	<form action="/cart/checkout" method="get" style="margin: 0;">
+		<button type="submit" class="web-btn-default">&laquo; Go Back</button>
+	</form>
+</div>
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+	<div class="web-alert">
+		@ViewBag.Error
+	</div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.CouponMessage))
+{
+	<div class="web-alert">
+		@ViewBag.CouponMessage
+	</div>
+}
+
+<div class="web-module">
+	<div class="web-module-header">
+		<span>Complete Payment</span>
+	</div>
+	<div class="web-module-body">
+
+		<div style="font-weight: bold; font-size: 13px; color: #003366; margin-bottom: 10px;">Shipment Address</div>
+
+		@{
+			if (Model.Count() == 0)
+			{
+				<div class="web-alert" style="margin-bottom: 15px;">
+					You don't have any saved address. Press 'Add new Address' button to add.
+				</div>
+			}
+			else
+			{
+				<form action="/payment/completetransaction" method="post">
+					@foreach (var item in Model)
+					{
+						<div class="web-address-card">
+							<input type="radio" id="address-@item.Id" name="addressId" value="@item.Id" required @(Model.First() == item ? "checked" : "") />
+							<label for="address-@item.Id" class="web-address-title">@item.Name</label>
+							<div class="web-address-details">
+								<p style="margin: 0;">
+									@item.Neighbourhood @item.Street No: @item.BuildingNumber DoorNo: @item.DoorNumber
+									@item.City @item.District @item.Description
+								</p>
+							</div>
+						</div>
+					}
+
+					<div class="web-checkout-summary">
+						@{
+							if (ViewBag.OldPrice != null)
+							{
+								<div class="web-old-price">Total Price: @ViewBag.OldPrice ₺</div>
+								<div class="web-discount-text">Discounted Price: @ViewBag.TotalPrice ₺</div>
+							}
+							else
+							{
+								<div class="web-price-text">Total Price: @ViewBag.TotalPrice ₺</div>
+							}
+						}
+					</div>
+
+					<button type="submit" class="web-btn-action">Proceed to Secure Payment</button>
+				</form>
+			}
+		}
+
+		<div class="web-section-divider"></div>
+
+		<div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+			<form action="/user/address" method="post" style="margin: 0;">
+				<input type="hidden" name="frompage" value="pay" />
+				<button type="submit" class="web-btn-default">Add new Address</button>
+			</form>
+
+			@{
+				if (ViewBag.OldPrice == null)
+				{
+					<form action="/payment/applycoupon" method="post" style="margin: 0; display: flex; gap: 5px; align-items: center;">
+						<input type="text" name="code" class="web-input-text" placeholder="Enter Your Coupon Code..." />
+						<button type="submit" class="web-btn-default">Apply Coupon</button>
+					</form>
+				}
+				else
+				{
+					<div style="display: flex; gap: 10px; align-items: center;">
+						<span style="font-weight: bold; color: #008000;">Applied Coupon = @ViewBag.CouponCode</span>
+						<form action="/payment/removecoupon" method="post" style="margin: 0;">
+							<button type="submit" class="web-btn-fav-remove">Remove Coupon</button>
+						</form>
+					</div>
+				}
+			}
+		</div>
+
+	</div>
+</div>

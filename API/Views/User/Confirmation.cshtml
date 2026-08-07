@@ -1,0 +1,146 @@
+﻿<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 4px 12px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-alert {
+		background-color: #fff6bf;
+		border: 1px solid #ffd23f;
+		padding: 8px 12px;
+		margin-bottom: 12px;
+		font-weight: bold;
+		color: #514721;
+	}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+		max-width: 500px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 8px 12px;
+		font-weight: bold;
+		font-size: 14px;
+		color: #003366;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-module-body {
+		padding: 15px;
+	}
+
+	.web-info-text {
+		font-size: 12px;
+		color: #444444;
+		line-height: 1.4;
+		margin-bottom: 15px;
+	}
+
+	.web-form-group {
+		margin-bottom: 12px;
+	}
+
+	.web-input-text {
+		width: 100%;
+		padding: 6px;
+		border: 1px solid #7f9db9;
+		font-size: 12px;
+		box-sizing: border-box;
+		border-radius: 2px;
+	}
+
+	.web-btn-action {
+		background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+		border: 1px solid #cc7a00;
+		color: #000000;
+		font-weight: bold;
+		padding: 6px 18px;
+		font-size: 12px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+		.web-btn-action:hover {
+			background: linear-gradient(to bottom, #ffdb33 0%, #e68a00 100%);
+		}
+</style>
+
+<div class="web-top-bar">
+	<form action="/ecommerce" method="get" style="margin: 0;">
+		<button type="submit" class="web-btn-default">&laquo; Home Page</button>
+	</form>
+</div>
+
+@if (!string.IsNullOrEmpty(ViewBag.ConfirmMessage))
+{
+	<div class="web-alert" style="max-width: 500px;">
+		@ViewBag.ConfirmMessage
+	</div>
+}
+
+<div class="web-module">
+	<div class="web-module-header">
+		<span>Confirm Account</span>
+	</div>
+	<div class="web-module-body">
+		<p class="web-info-text">
+			We've sent a confirmation code to your e-mail. Please enter the code below.
+		</p>
+
+		<form action="/user/sendconfirmation" method="post">
+			<div class="web-form-group">
+				<input type="text" class="web-input-text" required placeholder="Enter your Code..." name="code" />
+			</div>
+			<div style="margin-top: 15px;">
+				<button type="submit" class="web-btn-action">Verify Account</button>
+			</div>
+		</form>
+	</div>
+</div>

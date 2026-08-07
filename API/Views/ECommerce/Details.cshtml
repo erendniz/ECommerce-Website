@@ -1,0 +1,565 @@
+﻿@model Tuple<API.Models.Book, List<API.Models.Review>, List<API.Models.User>, API.Models.Review>
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-basket-info {
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	.web-badge {
+		background-color: #cc0000;
+		color: #ffffff;
+		padding: 1px 6px;
+		border-radius: 10px;
+		font-size: 11px;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 4px 12px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-btn-action {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+		border: 1px solid #cc7a00;
+		color: #000000;
+		font-weight: bold;
+		padding: 6px 12px;
+		font-size: 11px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+		.web-btn-action:hover {
+			background: linear-gradient(to bottom, #ffdb33 0%, #e68a00 100%);
+		}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 8px 12px;
+		font-weight: bold;
+		font-size: 14px;
+		color: #003366;
+	}
+
+	.web-module-body {
+		padding: 15px;
+	}
+
+	.web-product-details {
+		display: flex;
+		gap: 20px;
+		margin-bottom: 15px;
+		align-items: flex-start;
+	}
+
+	.web-product-img-container {
+		width: 220px;
+		text-align: center;
+		border: 1px solid #e0e0e0;
+		padding: 10px;
+		background: #ffffff;
+		flex-shrink: 0;
+	}
+
+	.web-product-info {
+		flex-grow: 1;
+	}
+
+	.web-product-buybox {
+		width: 220px;
+		background-color: #f4f7fa;
+		border: 1px solid #b2c2d6;
+		border-radius: 4px;
+		padding: 15px;
+		flex-shrink: 0;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+	}
+
+	.web-price-box {
+		margin-bottom: 15px;
+		padding-bottom: 10px;
+		border-bottom: 1px dotted #cccccc;
+	}
+
+	.web-price-label {
+		font-size: 11px;
+		color: #555555;
+		margin-bottom: 3px;
+	}
+
+	.web-price-value {
+		font-size: 18px;
+		font-weight: bold;
+		color: #b20000;
+	}
+
+	.web-product-title {
+		font-size: 16px;
+		font-weight: bold;
+		color: #0000cc;
+		margin-bottom: 10px;
+	}
+
+	.web-product-desc {
+		font-size: 12px;
+		color: #444444;
+		margin-bottom: 15px;
+		line-height: 1.4;
+		background: #fdfdfd;
+		padding: 10px;
+		border: 1px solid #eee;
+	}
+
+	.web-spec-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-bottom: 15px;
+	}
+
+		.web-spec-table td {
+			padding: 4px 8px;
+			border-bottom: 1px dotted #ccc;
+		}
+
+	.web-spec-label {
+		font-weight: bold;
+		width: 140px;
+		color: #555555;
+	}
+
+	.web-stars {
+		color: #e67e22;
+		font-weight: bold;
+		font-size: 13px;
+	}
+
+	.web-review-card {
+		border-bottom: 1px dotted #ccc;
+		padding: 10px 0;
+	}
+
+		.web-review-card:last-child {
+			border-bottom: none;
+		}
+
+	.web-review-header {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		margin-bottom: 5px;
+	}
+
+	.web-review-user {
+		font-weight: bold;
+		color: #003366;
+	}
+
+	.web-review-date {
+		color: #777;
+		font-size: 11px;
+	}
+
+	.web-review-comment {
+		margin: 5px 0 0 0;
+		color: #333;
+	}
+
+	.web-review-form {
+		background: #f9f9f9;
+		border: 1px solid #e0e0e0;
+		padding: 12px;
+		margin-top: 10px;
+	}
+
+	.web-review-form-rating {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 10px;
+	}
+
+	.web-input-text {
+		width: 100%;
+		max-width: 400px;
+		padding: 5px;
+		border: 1px solid #7f9db9;
+		font-size: 12px;
+		margin-bottom: 10px;
+		display: block;
+	}
+
+	.web-btn-disabled {
+		width: 100%;
+		background: #e0e0e0;
+		border: 1px solid #cccccc;
+		color: #888888;
+		padding: 6px 0;
+		font-size: 11px;
+		border-radius: 3px;
+		font-weight: bold;
+	}
+
+	.web-btn-fav-add {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+		border: 1px solid #a0a0a0;
+		color: #003366;
+		font-weight: bold;
+		padding: 5px 0;
+		font-size: 11px;
+		border-radius: 3px;
+		cursor: pointer;
+		margin-top: 8px;
+	}
+
+		.web-btn-fav-add:hover {
+			background: linear-gradient(to bottom, #f5f5f5 0%, #e0e0e0 100%);
+		}
+
+	.web-btn-fav-remove {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #cc0000;
+		font-weight: bold;
+		padding: 5px 0;
+		font-size: 11px;
+		border-radius: 3px;
+		cursor: pointer;
+		margin-top: 8px;
+	}
+
+		.web-btn-fav-remove:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d9d9d9 100%);
+		}
+</style>
+
+<div class="web-top-bar">
+	<form action="/ecommerce" method="get" style="margin: 0;">
+		<button type="submit" class="web-btn-default">&laquo; Go Back</button>
+	</form>
+
+	<div class="web-basket-info">
+		<form action="/cart/checkout" method="get" style="display:inline-block;">
+			<span class="web-badge">@ViewBag.TotalQuantity</span>
+			<span style="margin: 0 5px;">| @(ViewBag.TotalPrice.ToString("C2"))</span>
+			<button type="submit" class="web-btn-default">My Basket</button>
+		</form>
+	</div>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">Book Details</div>
+	<div class="web-module-body">
+		<div class="web-product-details">
+			<div class="web-product-img-container">
+				<img src="@Model.Item1.Image" width="200" height="200" style="object-fit: contain;" />
+			</div>
+
+			<div class="web-product-info">
+				<div class="web-product-title">@Model.Item1.Title</div>
+				<div class="web-product-desc">@Model.Item1.Description</div>
+
+				<table class="web-spec-table">
+					<tr>
+						<td class="web-spec-label">Title:</td>
+						<td>@Model.Item1.Title</td>
+					</tr>
+					<tr>
+						<td class="web-spec-label">Author:</td>
+						<td>@Model.Item1.Author</td>
+					</tr>
+					<tr>
+						<td class="web-spec-label">Publisher:</td>
+						<td>@Model.Item1.Publisher</td>
+					</tr>
+					@if (!string.IsNullOrWhiteSpace(Model.Item1.Translator))
+					{
+						<tr>
+							<td class="web-spec-label">Translator:</td>
+							<td>@Model.Item1.Translator</td>
+						</tr>
+					}
+					@if (!string.IsNullOrWhiteSpace(Model.Item1.Size))
+					{
+						<tr>
+							<td class="web-spec-label">Size:</td>
+							<td>@Model.Item1.Size</td>
+						</tr>
+					}
+					@if (!string.IsNullOrWhiteSpace(Model.Item1.Printyear))
+					{
+						<tr>
+							<td class="web-spec-label">Print Year:</td>
+							<td>@Model.Item1.Printyear</td>
+						</tr>
+					}
+					@if (!string.IsNullOrWhiteSpace(Model.Item1.Pages))
+					{
+						<tr>
+							<td class="web-spec-label">Number of Pages:</td>
+							<td>@Model.Item1.Pages</td>
+						</tr>
+					}
+					<tr>
+						<td class="web-spec-label">Product Rating:</td>
+						<td>
+							@{
+								string stars = "";
+								if (Model.Item1.Rating == "0")
+								{
+									<span>This product has no rating yet.</span>
+								}
+								else
+								{
+									float rate = Convert.ToInt32(Model.Item1.Rating) / 2f;
+									switch (Convert.ToInt32(Model.Item1.Rating))
+									{
+										case 1:
+										case 2:
+											stars = "★☆☆☆☆";
+											break;
+										case 3:
+										case 4:
+											stars = "★★☆☆☆";
+											break;
+										case 5:
+										case 6:
+											stars = "★★★☆☆";
+											break;
+										case 7:
+										case 8:
+											stars = "★★★★☆";
+											break;
+										case 9:
+										case 10:
+											stars = "★★★★★";
+											break;
+									}
+									<span class="web-stars">@stars</span> <span>(@rate / 5)</span>
+								}
+							}
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="web-product-buybox">
+				<div class="web-price-box">
+					<div class="web-price-label">Price:</div>
+					<div class="web-price-value">@Model.Item1.Price</div>
+				</div>
+
+				@{
+					if (@Model.Item1.Stock > 0)
+					{
+						<form action="/ecommerce/addbasket" method="post" style="margin: 0;">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="id" value="@Model.Item1.Id" />
+							<input type="hidden" name="frompage" value="details" />
+							<button type="submit" class="web-btn-action">Add to Basket</button>
+						</form>
+					}
+					else
+					{
+						<button type="button" class="web-btn-disabled" disabled>Out of Stock...</button>
+					}
+				}
+
+				@if (ViewBag.Name != null)
+				{
+					if (!Model.Item1.FavoriteStatus)
+					{
+						<form action="/ecommerce/addfavorites" method="post" style="margin: 0;">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="id" value="@Model.Item1.Id" />
+							<input type="hidden" name="frompage" value="details" />
+							<button type="submit" class="web-btn-fav-add">+ Add Favorites</button>
+						</form>
+					}
+					else
+					{
+						<form action="/ecommerce/removefavorites" method="post" style="margin: 0;">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="id" value="@Model.Item1.Id" />
+							<input type="hidden" name="frompage" value="details" />
+							<button type="submit" class="web-btn-fav-remove">- Remove Favorite</button>
+						</form>
+					}
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">Reviews</div>
+	<div class="web-module-body">
+		@{
+			if (Model.Item2.Count == 0)
+			{
+				<p>This product has no reviews yet. Be the first one to review!</p>
+			}
+			else
+			{
+				foreach (var review in Model.Item2)
+				{
+					string userstars = "";
+					switch (review.Rating)
+					{
+						case 1:
+						case 2:
+							userstars = "★☆☆☆☆";
+							break;
+						case 3:
+						case 4:
+							userstars = "★★☆☆☆";
+							break;
+						case 5:
+						case 6:
+							userstars = "★★★☆☆";
+							break;
+						case 7:
+						case 8:
+							userstars = "★★★★☆";
+							break;
+						case 9:
+						case 10:
+							userstars = "★★★★★";
+							break;
+					}
+					var user = Model.Item3.FirstOrDefault(u => u.Id == review.UserId);
+					<div class="web-review-card">
+						<div class="web-review-header">
+							<span class="web-review-user">@user.Name @user.Surname</span>
+							<span class="web-stars">@userstars</span>
+							<span class="web-review-date">@review.ReviewDate</span>
+						</div>
+						<p class="web-review-comment">@review.Comment</p>
+					</div>
+				}
+			}
+		}
+	</div>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">User Review Action</div>
+	<div class="web-module-body">
+		@{
+			if (!string.IsNullOrEmpty(ViewBag.ReviewMessage))
+			{
+				<div style="font-weight: bold; color: #555;">@ViewBag.ReviewMessage</div>
+			}
+			else if (string.Equals(ViewBag.ReviewControl, "true"))
+			{
+				<div class="web-review-form">
+					<div style="font-weight: bold; margin-bottom: 8px; color: #003366;">Leave a Review</div>
+					<form action="/ecommerce/submitreview" method="post">
+						<input type="hidden" name="book" value="@Model.Item1.Id" />
+						<div class="web-review-form-rating">
+							<label>1</label><input type="radio" name="rating" value="2" required />
+							<label>2</label><input type="radio" name="rating" value="4" required />
+							<label>3</label><input type="radio" name="rating" value="6" required />
+							<label>4</label><input type="radio" name="rating" value="8" required />
+							<label>5</label><input type="radio" name="rating" value="10" required />
+						</div>
+						<input type="text" name="comment" class="web-input-text" placeholder="Write your comment... (optional)" />
+						<button type="submit" class="web-btn-action" style="width: auto; padding: 4px 15px;">Share Review</button>
+					</form>
+				</div>
+			}
+			else if (string.Equals(ViewBag.ReviewControl, "false"))
+			{
+				string userstars = "";
+				switch (Model.Item4.Rating)
+				{
+					case 1:
+					case 2:
+						userstars = "★☆☆☆☆";
+						break;
+					case 3:
+					case 4:
+						userstars = "★★☆☆☆";
+						break;
+					case 5:
+					case 6:
+						userstars = "★★★☆☆";
+						break;
+					case 7:
+					case 8:
+						userstars = "★★★★☆";
+						break;
+					case 9:
+					case 10:
+						userstars = "★★★★★";
+						break;
+				}
+				var user = Model.Item3.FirstOrDefault(u => u.Id == Model.Item4.UserId);
+				<div class="web-review-card">
+					<div style="font-weight: bold; margin-bottom: 8px; color: #003366;">Your Submitted Review</div>
+					<div class="web-review-header">
+						<span class="web-review-user">@user.Name @user.Surname</span>
+						<span class="web-stars">@userstars</span>
+						<span class="web-review-date">@Model.Item4.ReviewDate</span>
+					</div>
+					<p class="web-review-comment">@Model.Item4.Comment</p>
+				</div>
+			}
+
+			else
+			{
+				<div style="font-weight: bold; color: #555;">@ViewBag.ReviewControl</div>
+			}
+		}
+	</div>
+</div>

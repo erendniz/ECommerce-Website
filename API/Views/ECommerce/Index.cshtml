@@ -1,0 +1,571 @@
+﻿@using System.Text
+@model List<API.Models.Book>
+
+@{
+	int under200 = 0;
+	int btwn200400 = 0;
+	int more400 = 0;
+	int bfr2010 = 0;
+	int aftr2020 = 0;
+	int btwn20102020 = 0;
+	int zero = 0;
+	int one = 0;
+	int two = 0;
+	int three = 0;
+	int four = 0;
+	int five = 0;
+}
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-welcome {
+		font-size: 13px;
+		font-weight: bold;
+		color: #333;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 3px 10px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-alert {
+		background-color: #fff6bf;
+		border: 1px solid #ffd23f;
+		padding: 8px 12px;
+		margin-bottom: 12px;
+		font-weight: bold;
+		color: #514721;
+	}
+
+	.web-basket-info {
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	.web-badge {
+		background-color: #cc0000;
+		color: #ffffff;
+		padding: 1px 6px;
+		border-radius: 10px;
+		font-size: 11px;
+	}
+
+	.web-page-title {
+		font-size: 18px;
+		font-weight: bold;
+		color: #003366;
+		margin: 10px 0 15px 0;
+		border-bottom: 2px solid #003366;
+		padding-bottom: 4px;
+	}
+
+	.web-main-layout {
+		display: flex;
+		gap: 15px;
+	}
+
+	.web-sidebar {
+		width: 230px;
+		flex-shrink: 0;
+	}
+
+	.web-content {
+		flex-grow: 1;
+	}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 6px 10px;
+		font-weight: bold;
+		font-size: 13px;
+		color: #003366;
+	}
+
+	.web-module-body {
+		padding: 10px;
+	}
+
+	.web-filter-section {
+		margin-bottom: 12px;
+		border-bottom: 1px dotted #ccc;
+		padding-bottom: 8px;
+	}
+
+		.web-filter-section:last-of-type {
+			border-bottom: none;
+		}
+
+	.web-filter-title {
+		font-weight: bold;
+		color: #333;
+		margin: 6px 0 4px 0;
+		font-size: 11px;
+		text-transform: uppercase;
+	}
+
+	.web-filter-option {
+		margin: 3px 0;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.web-filter-input-text {
+		width: 100%;
+		padding: 4px;
+		border: 1px solid #7f9db9;
+		font-size: 11px;
+		box-sizing: border-box;
+	}
+
+	.web-btn-submit {
+		background: linear-gradient(to bottom, #0066cc 0%, #003399 100%);
+		color: white;
+		border: 1px solid #002266;
+		padding: 5px 12px;
+		font-weight: bold;
+		font-size: 11px;
+		border-radius: 2px;
+		cursor: pointer;
+		width: 100%;
+		margin-top: 8px;
+	}
+
+		.web-btn-submit:hover {
+			background: linear-gradient(to bottom, #0055bb 0%, #002288 100%);
+		}
+
+	.web-sort-bar {
+		background-color: #f2f2f2;
+		border: 1px solid #cccccc;
+		padding: 8px 12px;
+		margin-bottom: 15px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.web-sort-select {
+		padding: 3px 6px;
+		border: 1px solid #7f9db9;
+		font-size: 12px;
+	}
+
+	.web-table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		border: 1px solid #cccccc;
+	}
+
+		.web-table th {
+			background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+			border: 1px solid #b2c2d6;
+			padding: 8px 5px;
+			font-size: 11px;
+			color: #003366;
+			text-align: center;
+		}
+
+		.web-table td {
+			border: 1px solid #e0e0e0;
+			padding: 8px 5px;
+			vertical-align: middle;
+		}
+
+		.web-table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		.web-table tr:hover {
+			background-color: #f0f4f9;
+		}
+
+	.web-price-text {
+		font-size: 13px;
+		font-weight: bold;
+		color: #b20000;
+	}
+
+	.web-btn-action {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+		border: 1px solid #cc7a00;
+		color: #000000;
+		font-weight: bold;
+		padding: 4px 0;
+		font-size: 11px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+		.web-btn-action:hover {
+			background: linear-gradient(to bottom, #ffdb33 0%, #e68a00 100%);
+		}
+
+	.web-btn-disabled {
+		width: 100%;
+		background: #e0e0e0;
+		border: 1px solid #cccccc;
+		color: #888888;
+		padding: 4px 0;
+		font-size: 11px;
+		border-radius: 3px;
+	}
+
+	.web-btn-fav-add {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #006600;
+		font-weight: bold;
+		padding: 3px 0;
+		font-size: 10px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+
+	.web-btn-fav-remove {
+		width: 100%;
+		background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+		border: 1px solid #b5b5b5;
+		color: #cc0000;
+		font-weight: bold;
+		padding: 3px 0;
+		font-size: 10px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+</style>
+
+@if (ViewBag.LoginMessage != null)
+{
+	<div class="web-alert">
+		@ViewBag.LoginMessage
+	</div>
+}
+
+<header class="web-top-bar">
+	<div>
+		@{
+			if (ViewBag.Name != null)
+			{
+				<span class="web-welcome">Hello, <strong>@ViewBag.Name @ViewBag.Surname</strong>!</span>
+			}
+		}
+		<form action="/ecommerce" method="get" style="display:inline-block; margin-left: 5px;">
+			<button type="submit" class="web-btn-default">Home Page</button>
+		</form>
+		<form action="/user/profile" method="get" style="display:inline-block; margin-left: 5px;">
+			<button type="submit" class="web-btn-default">My Profile</button>
+		</form>
+		</div>
+
+	<div class="web-basket-info">
+		<form action="/cart/checkout" method="get" style="display:inline-block;">
+			<span class="web-badge">@ViewBag.TotalQuantity</span>
+			<span style="margin: 0 5px;">| @(ViewBag.TotalPrice.ToString("C2"))</span>
+			<button type="submit" class="web-btn-default">My Basket</button>
+		</form>
+	</div>
+</header>
+
+@{
+	if (ViewBag.CategoryName != null)
+	{
+		<div class="web-page-title">@ViewBag.CategoryName</div>
+	}
+	else
+	{
+		<div class="web-page-title">Books</div>
+	}
+}
+
+@{
+	foreach (var item in Model)
+	{
+		int number;
+		int index = item.Price.ToString().IndexOf(",");
+		try
+		{
+			number = Convert.ToInt32(item.Price.ToString().Substring(0, index));
+		}
+		catch (Exception e)
+		{
+			int indexdot = item.Price.ToString().IndexOf(".");
+			StringBuilder sb = new StringBuilder(item.Price.ToString());
+			sb.Remove(indexdot, 1);
+			index = sb.ToString().IndexOf(",");
+			number = Convert.ToInt32(sb.ToString().Substring(0, index));
+		}
+		int rate = Convert.ToInt32(item.Rating.ToString().Split(",")[0]);
+		int year;
+		try
+		{
+			year = Convert.ToInt32(item.Printyear.ToString());
+		}
+		catch (Exception e)
+		{
+			year = 0;
+		}
+
+		if (number < 200) under200++;
+		else if (number >= 400) more400++;
+		else btwn200400++;
+
+		if (year < 2010) bfr2010++;
+		else if (year >= 2020) aftr2020++;
+		else btwn20102020++;
+
+		switch (rate)
+		{
+			case 0:
+				zero++;
+				break;
+			case 1: case 2: one++; break;
+			case 3: case 4: two++; break;
+			case 5: case 6: three++; break;
+			case 7: case 8: four++; break;
+			case 9: case 10: five++; break;
+		}
+	}
+}
+
+<div class="web-main-layout">
+
+	<aside class="web-sidebar">
+		<div class="web-module">
+			<div class="web-module-header">Filter Options</div>
+			<div class="web-module-body">
+				<form action="/ecommerce/filter" method="post">
+
+					<div class="web-filter-section">
+						<div class="web-filter-title">Price</div>
+						<div class="web-filter-option">
+							<input type="radio" id="under200" name="price" value="200" @(ViewBag.PriceChoice == "200" ? "checked" : "")>
+							<label for="under200">Under 200 TL (@under200)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="btwn200400" name="price" value="300" @(ViewBag.PriceChoice == "300" ? "checked" : "")>
+							<label for="btwn200400">200 To 400 TL (@btwn200400)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="more400" name="price" value="400" @(ViewBag.PriceChoice == "400" ? "checked" : "")>
+							<label for="more400">400 TL Or More (@more400)</label>
+						</div>
+					</div>
+
+					<div class="web-filter-section">
+						<div class="web-filter-title">Print Year</div>
+						<div class="web-filter-option">
+							<input type="radio" id="bfr2010" name="year" value="2010" @(ViewBag.YearChoice == "2010" ? "checked" : "")>
+							<label for="bfr2010">Before 2010 (@bfr2010)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="btwn20102020" name="year" value="2015" @(ViewBag.YearChoice == "2015" ? "checked" : "")>
+							<label for="btwn20102020">2010 to 2020 (@btwn20102020)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="aftr2020" name="year" value="2020" @(ViewBag.YearChoice == "2020" ? "checked" : "")>
+							<label for="aftr2020">After 2020 (@aftr2020)</label>
+						</div>
+					</div>
+
+					<div class="web-filter-section">
+						<div class="web-filter-title">Rating</div>
+						<div class="web-filter-option">
+							<input type="radio" id="zero" name="rate" value="0" @(ViewBag.RateChoice == "0" ? "checked" : "")>
+							<label for="zero">0 (@zero)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="one" name="rate" value="1" @(ViewBag.RateChoice == "1" ? "checked" : "")>
+							<label for="one">1 (@one)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="two" name="rate" value="2" @(ViewBag.RateChoice == "2" ? "checked" : "")>
+							<label for="two">2 (@two)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="three" name="rate" value="3" @(ViewBag.RateChoice == "3" ? "checked" : "")>
+							<label for="three">3 (@three)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="four" name="rate" value="4" @(ViewBag.RateChoice == "4" ? "checked" : "")>
+							<label for="four">4 (@four)</label>
+						</div>
+						<div class="web-filter-option">
+							<input type="radio" id="five" name="rate" value="5" @(ViewBag.RateChoice == "5" ? "checked" : "")>
+							<label for="five">5 (@five)</label>
+						</div>
+					</div>
+
+					<div class="web-filter-section">
+						<div class="web-filter-title">Title</div>
+						<input type="text" id="title" name="title" class="web-filter-input-text" placeholder='Enter a Title...' @(string.IsNullOrEmpty(ViewBag.TitleChoice) ? "" : $"value={ViewBag.TitleChoice}") />
+
+						<div class="web-filter-title">Publisher</div>
+						<input type="text" id="publisher" name="publisher" class="web-filter-input-text" placeholder='Enter a Publisher...' @(string.IsNullOrEmpty(ViewBag.PublisherChoice) ? "" : "value=" + ViewBag.PublisherChoice) />
+
+						<div class="web-filter-title">Author</div>
+						<input type="text" id="author" name="author" class="web-filter-input-text" placeholder="Enter an Author..." @(string.IsNullOrEmpty(ViewBag.AuthorChoice) ? "" : "value=" + ViewBag.AuthorChoice) />
+					</div>
+
+					<button type="submit" class="web-btn-submit">Submit Filter</button>
+				</form>
+
+				<form action="/ecommerce/showall" style="margin-top: 5px;">
+					<button type="submit" class="web-btn-default" style="width: 100%;">Show All</button>
+				</form>
+			</div>
+		</div>
+	</aside>
+
+	<main class="web-content">
+
+		<div class="web-sort-bar">
+			<form action="/ecommerce/sort" method="post" style="display:flex; align-items:center; gap:8px; margin:0;">
+				<label for="srt" style="font-weight:bold;">Sort By:</label>
+				@Html.AntiForgeryToken()
+				<input type="hidden" name="frompage" value="filtered" />
+				<select name="sortoption" id="srt" class="web-sort-select" onchange="this.form.submit()">
+					<option value="" disabled selected>Sort By...</option>
+					<option value="name">Title</option>
+					<option value="publisher">Publisher</option>
+					<option value="printyear">Print Year</option>
+					<option value="author">Author</option>
+					<option value="rating">Rating</option>
+					<option value="price">Price</option>
+				</select>
+			</form>
+		</div>
+
+		<table class="web-table">
+			<thead>
+				<tr>
+					<th>Photo</th>
+					<th>Title</th>
+					<th>Publisher</th>
+					<th>Print Year</th>
+					<th>Author</th>
+					<th>Rating</th>
+					<th>Price</th>
+					<th>Cart Action</th>
+					@if (ViewBag.Name != null)
+					{
+						<th>Favorite Action</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					float rate = Convert.ToInt32(item.Rating) / 2;
+					<tr>
+						<td style="text-align: center;">
+							<img src="@item.Image" width="80" height="80" style="object-fit: contain;" />
+						</td>
+						<td style="text-align: center; font-weight: bold;">
+							<a href="/ecommerce/details/@item.Id">@item.Title</a>
+						</td>
+						<td style="text-align: center;">@item.Publisher</td>
+						<td style="text-align: center;">@item.Printyear</td>
+						<td style="text-align: center;">@item.Author</td>
+						<td style="text-align: center; font-weight: bold; color: #cc6600;">@rate / 5</td>
+						<td style="text-align: center;" class="web-price-text">@item.Price</td>
+						<td style="text-align: center;">
+							@{
+								if (item.Stock > 0)
+								{
+									<form action="/ecommerce/addbasket" method="post">
+										@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@item.Id" />
+										<input type="hidden" name="frompage" value="index" />
+										<button type="submit" class="web-btn-action">Add to Basket</button>
+									</form>
+								}
+								else
+								{
+									<button type="submit" class="web-btn-disabled" disabled>Out of Stock...</button>
+								}
+							}
+						</td>
+						@{
+							if (ViewBag.Name != null)
+							{
+								<td style="text-align: center;">
+									@{
+										if (!item.FavoriteStatus)
+										{
+											<form action="/ecommerce/addfavorites" method="post">
+												@Html.AntiForgeryToken()
+												<input type="hidden" name="id" value="@item.Id" />
+												<input type="hidden" name="frompage" value="index" />
+												<button type="submit" class="web-btn-fav-add">+ Add Favorites</button>
+											</form>
+										}
+										else
+										{
+											<form action="/ecommerce/removefavorites" method="post">
+												@Html.AntiForgeryToken()
+												<input type="hidden" name="id" value="@item.Id" />
+												<input type="hidden" name="frompage" value="index" />
+												<button type="submit" class="web-btn-fav-remove">- Remove Favorite</button>
+											</form>
+										}
+									}
+								</td>
+							}
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+	</main>
+</div>

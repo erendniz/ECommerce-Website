@@ -1,0 +1,184 @@
+﻿@model Tuple<List<API.Models.Order>, List<API.Models.Address>, List<API.Models.Book>>
+
+<style>
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		background-color: #f8f8f8;
+		color: #333333;
+		margin: 0;
+		padding: 10px 20px;
+	}
+
+	a {
+		color: #0000cc;
+		text-decoration: underline;
+	}
+
+		a:hover {
+			color: #3366cc;
+		}
+
+	.web-top-bar {
+		background: linear-gradient(to bottom, #ffffff 0%, #eef0f2 100%);
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+		padding: 8px 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-btn-default {
+		background: linear-gradient(to bottom, #fefefe 0%, #e0e0e0 100%);
+		border: 1px solid #a0a0a0;
+		border-radius: 3px;
+		padding: 4px 12px;
+		font-size: 11px;
+		font-weight: bold;
+		color: #333;
+		cursor: pointer;
+		box-shadow: inset 0 1px 0 #fff;
+	}
+
+		.web-btn-default:hover {
+			background: linear-gradient(to bottom, #f0f0f0 0%, #d0d0d0 100%);
+		}
+
+	.web-module {
+		border: 1px solid #c8c8c8;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.web-module-header {
+		background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+		border-bottom: 1px solid #b2c2d6;
+		padding: 8px 12px;
+		font-weight: bold;
+		font-size: 14px;
+		color: #003366;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.web-module-body {
+		padding: 10px;
+	}
+
+	.web-table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		border: 1px solid #cccccc;
+	}
+
+		.web-table th {
+			background: linear-gradient(to bottom, #e8edf6 0%, #d2dceb 100%);
+			border: 1px solid #b2c2d6;
+			padding: 8px 5px;
+			font-size: 11px;
+			color: #003366;
+			text-align: center;
+		}
+
+		.web-table td {
+			border: 1px solid #e0e0e0;
+			padding: 8px 5px;
+			vertical-align: middle;
+		}
+
+		.web-table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		.web-table tr:hover {
+			background-color: #f0f4f9;
+		}
+
+	.web-price-text {
+		font-size: 13px;
+		font-weight: bold;
+		color: #b20000;
+	}
+
+	.web-item-list p {
+		margin: 3px 0;
+		padding: 3px 0;
+		border-bottom: 1px dotted #e0e0e0;
+	}
+
+		.web-item-list p:last-child {
+			border-bottom: none;
+		}
+</style>
+
+<div class="web-top-bar">
+	<form action="/user/profile" style="margin: 0;">
+		<button type="submit" class="web-btn-default">&laquo; Go Back</button>
+	</form>
+</div>
+
+<div class="web-module">
+	<div class="web-module-header">
+		<span>Orders</span>
+	</div>
+	<div class="web-module-body">
+		<table class="web-table">
+			<thead>
+				<tr>
+					<th>Order No</th>
+					<th>Products</th>
+					<th>Order Date</th>
+					<th>Address</th>
+					<th>Total Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					foreach (var order in Model.Item1)
+					{
+						<tr>
+							<td style="text-align: center; font-weight: bold;">@order.Id</td>
+							<td class="web-item-list">
+								@{
+									foreach (var orderitem in order.OrderItems)
+									{
+										var book = Model.Item3.Find(b => b.Id == orderitem.BookId);
+										string bookstring = book.Title + " - " + book.Author + " - " + book.Publisher;
+										<p style="margin: 0;"><a href="/ecommerce/details/@book.Id">@bookstring</a></p>
+										<p style="margin: 0;">Price: @orderitem.Price</p>
+										<p style="margin: 0;">Quantity: @orderitem.Quantity</p>
+									}
+								}
+							</td>
+							<td style="text-align: center;">@order.OrderDate</td>
+							<td>
+								@{
+									var address = Model.Item2.Find(a => a.Id == order.AddressId);
+									Console.WriteLine(Model.Item2[0].Id);
+									string addresstext = address.Neighbourhood + " " + address.Street + " Building No: " + address.BuildingNumber +
+									" Door No: " + address.DoorNumber + " " + address.District + " " + address.City + " " + address.Description;
+									<p style="margin: 0;">@addresstext</p>
+								}
+							</td>
+							<td style="text-align: center;" class="web-price-text">
+								@{
+									decimal total = 0m;
+									foreach (var orderitem in order.OrderItems)
+									{
+										total += (orderitem.Price * orderitem.Quantity);
+									}
+									total -= order.DiscountAmount;
+									<p style="margin: 0;">@total</p>
+								}
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
